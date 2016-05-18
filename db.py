@@ -33,12 +33,12 @@ def close_db_connection():
         print("Error closing connection")
 
 
-def create_new_category(name_of_category):
+def create_new_category(category):
     state = State.ok
 
     try:
         cursor = get_db_connection()
-        query = "CREATE TABLE {0} (word varchar(15) primary key, weight real)".format(name_of_category)
+        query = "CREATE TABLE {0} (word varchar(15) primary key, weight real)".format(category)
         cursor.execute(query)
     except Exception:
         state = State.error
@@ -49,35 +49,67 @@ def create_new_category(name_of_category):
     return state
 
 
-def get_category_data(name_of_category):
+def get_category_data(category):
     state = State.ok
     data = list()
 
     try:
         cursor = get_db_connection()
-        query = "SELECT * from {0} ORDER BY weight DESC".format(name_of_category)
+        query = "SELECT * from {0} ORDER BY weight DESC".format(category)
         for row in cursor.execute(query):
             data.append(row)
     except Exception:
         state = State.error
-        print("Error with getting data from {0} category".format(name_of_category))
+        print("Error with getting data from {0} category".format(category))
     finally:
         close_db_connection()
 
     return state, data
 
 
-def set_category_data(name_of_category, data):
+def set_category_data(category, data):
     state = State.ok
 
     try:
         cursor = get_db_connection()
-        query = "INSERT INTO {0} VALUES(?,?)".format(name_of_category)
+        query = "INSERT INTO {0} VALUES(?,?)".format(category)
         cursor.executemany(query, data)
     except Exception:
         state = State.error
-        print("Error with setting data to database in {0} category".format(name_of_category))
+        print("Error with setting data to database in {0} category".format(category))
     finally:
         close_db_connection()
 
     return state
+
+def get_file_names_in_category(category):
+    state = State.ok
+    names = list()
+    try:
+        cursor = get_db_connection()
+        query = "SELECT * FROM result WHERE category = {0}".format(category)
+        for row in cursor.execute(query):
+            names.append(row)
+    except Exception:
+        state = State.error
+        print("Error with getting category file names")
+    finally:
+        close_db_connection()
+
+    return state, names
+
+def get_file_names():
+    state = State.ok
+    names = list()
+    try:
+        cursor = get_db_connection()
+        query = "SELECT * FROM result"
+        for row in cursor.execute(query):
+            names.append(row)
+    except Exception:
+        state = State.error
+        print("Error with getting category file names")
+    finally:
+        close_db_connection()
+
+    return state, names
