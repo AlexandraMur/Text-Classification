@@ -69,11 +69,12 @@ def get_category_data(category):
 
 def set_category_data(category, data):
     state = State.ok
-
     try:
         cursor = get_db_connection()
-        query = "INSERT INTO {0} VALUES(?,?)".format(category)
-        cursor.executemany(query, data)
+        for key, value in data:
+            query = 'INSERT OR REPLACE INTO {0} (word, weight) VALUES({1},{2})'.format(category, key, value)
+            cursor.execute(query)
+
     except Exception:
         state = State.error
         print("Error with setting data to database in {0} category".format(category))
@@ -87,7 +88,7 @@ def get_file_names_in_category(category):
     names = list()
     try:
         cursor = get_db_connection()
-        query = "SELECT * FROM result WHERE category = {0}".format(category)
+        query = "SELECT * FROM result WHERE category = '{0}'".format(category)
         for row in cursor.execute(query):
             names.append(row)
     except Exception:
@@ -96,7 +97,7 @@ def get_file_names_in_category(category):
     finally:
         close_db_connection()
 
-    return state, names
+    return state.value, names
 
 def get_file_names():
     state = State.ok
@@ -112,4 +113,4 @@ def get_file_names():
     finally:
         close_db_connection()
 
-    return state, names
+    return state.value, names
