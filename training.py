@@ -13,7 +13,7 @@ def get_weights(common_words, category):
     for key, value in common_words:
         term_frequency = value / common_weight
 
-        number_documents_in_category, Number_documents = normalization.get_frequency_of_word(key, category)
+        number_documents_in_category, Number_documents = normalization.get_frequency_of_word_among_all(key, category)
         inverse_document_frequency = math.log2(Number_documents / number_documents_in_category)
 
         weights.append(('"'+key+'"', term_frequency * (1 if inverse_document_frequency == 0 else inverse_document_frequency)))
@@ -21,7 +21,8 @@ def get_weights(common_words, category):
     print(weights)
     return weights
 
-
+def compare_weight(weights, weights_from_db):
+    return
 
 def train(common_words, category, is_new=False):
     if (is_new):

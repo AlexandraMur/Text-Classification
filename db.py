@@ -64,7 +64,7 @@ def get_category_data(category):
     finally:
         close_db_connection()
 
-    return state, data
+    return state.value, data
 
 
 def set_category_data(category, data):
@@ -75,13 +75,14 @@ def set_category_data(category, data):
             query = 'INSERT OR REPLACE INTO {0} (word, weight) VALUES({1},{2})'.format(category, key, value)
             cursor.execute(query)
 
+        connection.commit()
     except Exception:
         state = State.error
         print("Error with setting data to database in {0} category".format(category))
     finally:
         close_db_connection()
 
-    return state
+    return state.value
 
 def get_file_names_in_category(category):
     state = State.ok

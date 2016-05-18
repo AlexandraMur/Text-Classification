@@ -10,14 +10,19 @@ import nltk
 import string
 import db
 
-
+'''
+    Returns frequency number of normalized word in text
+'''
 def get_word_frequency(word, text):
     filtered_text = deleting_stop_words_and_punctuating(text)
     all_words = nltk.FreqDist(filtered_text)
     return all_words.get(word)
 
 
-def get_frequency_of_word(word, category):
+'''
+    Returns n - number of corpus texts using word and N - number from all text using this word
+'''
+def get_frequency_of_word_among_all(word, category):
     state1, all_files = db.get_file_names()
     state2, category_files = db.get_file_names_in_category(category)
 
