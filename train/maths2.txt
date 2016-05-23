@@ -1,0 +1,18 @@
+Law of sines
+
+This article is about the law of sines in trigonometry. For the law of sines in physics, see Snell's law.
+In trigonometry, the law of sines, sine law, sine formula, or sine rule is an equation relating the lengths of the sides of any shaped triangle to the sines of its angles. According to the law,
+where a, b, and c are the lengths of the sides of a triangle, and A, B, and C are the opposite angles (see the figure to the right), while d is the diameter of the triangle's circumcircle. When the last of these equations is not used, the law is sometimes stated using the reciprocals;
+The law of sines can be used to compute the remaining sides of a triangle when two angles and a side are known—a technique known as triangulation. Numerical calculation using this technique may result in a numerical error if an angle is close to 90 degrees. It can also be used when two sides and one of the non-enclosed angles are known. In some such cases, the triangle is not uniquely determined by this data (called the ambiguous case) and the technique gives two possible values for the enclosed angle.
+
+The law of sines is one of two trigonometric equations commonly applied to find lengths and angles in scalene triangles, with the other being the law of cosines.
+
+The law of sines can be generalized to higher dimensions on surfaces with constant curvature.
+
+Proof
+Via a triangle area formula
+The area T of any triangle can be written as one half of its base times its height. Depending on which side one chooses to be the base, the area can be written as any of
+Multiplying these by 2/abc gives
+Alternative proof
+There are three cases to consider in proving the law of sines. The first is when all angles of the triangle are acute. The second is when one angle is a right angle. The third is when one angle is obtuse.
+

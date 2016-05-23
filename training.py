@@ -14,7 +14,7 @@ def get_weights(common_words, category):
         term_frequency = value / common_weight
 
         number_documents_in_category, Number_documents = normalization.get_frequency_of_word_among_all(key, category)
-        inverse_document_frequency = math.log2((Number_documents / number_documents_in_category if number_documents_in_category != 0 else 1) if Number_documents/number_documents_in_category != 0 else 1)
+        inverse_document_frequency = math.log2((Number_documents / number_documents_in_category if number_documents_in_category != 0 else 1) if number_documents_in_category != 0 else 1)
 
         weights.append(('"'+key+'"', term_frequency * (1 if inverse_document_frequency == 0 else inverse_document_frequency)))
 

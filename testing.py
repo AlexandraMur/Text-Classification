@@ -1,38 +1,50 @@
-import json
-from collections import OrderedDict
-
 '''
-    Special files filled by data for getting right category.
-    Categories file contains a list of topics and words with it's weights.
-    Dictionary file contains a list of most common words and it's weights relative the other texts.
+    Module for testing trained classificator.
+    Marks text one by one of category from database using classificator algorithm
 '''
-categories = OrderedDict()
-dictionary = OrderedDict()
 
-with open("categories.json") as categories_file:
-    categories = json.loads(categories_file.read(), object_pairs_hook=OrderedDict)
+import db
 
-with open("dict.json") as dictionary_file:
-    dictionary = json.loads(dictionary_file.read(), object_pairs_hook=OrderedDict)
+def count_weight(common_words, words_from_category):
+    sum_w = 0
+    sum_c = 0
+    for word_w, weight_w in common_words:
+        for word_c, weight_c in words_from_category:
+            if word_w in word_c:
+                sum_w += weight_w
+                sum_c += weight_c
+                break
 
-'''
-    Count weight of each needed word and mark text by one of the given category
-'''
-def testing(common_words):
-    common_weight = sum([number for word, number in common_words])
+    return sum_w, sum_c
 
-    weight = 0
-    for word, number in common_words:
-        weight_from_dict = dictionary[word]
-        weight += number - weight_from_dict * (common_words - 1)
+def classify(common_words):
+    state, categories = db.get_all_categories_names()
 
-    if (weight < 0):
-        return "Another"
+    if state is False:
+        print("Some Errors")
+        return
 
-    max = 0
-    for category in categories.items():
-        if category["weight"] > max:
-            max = category["weight"]
-            name = category.item()[0]
+    F = list()
+    for k, category in categories:
+        state, data = db.get_category_data(category)
 
-    return name
+        if state is False:
+            print("Some Errors")
+            return
+
+        sum_w, sum_c = count_weight(common_words, data)
+        if sum_w * sum_c != 0:
+            F.append((category, sum_w - sum_c))
+
+    category = ''
+    min = 1000
+
+    if len(F) == 0:
+        print("The category is 'another'")
+        return
+
+    for category_f, weight in F:
+        if weight < min:
+            category = category_f
+
+    print("The category is ", category)
